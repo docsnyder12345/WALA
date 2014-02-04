@@ -76,6 +76,9 @@ public class ContainerContextSelector implements ContextSelector {
   private final static MethodReference HashtableNewEntry = MethodReference.findOrCreate(JavaUtilHashtable, "newEntry",
       "(Ljava/lang/Object;Ljava/lang/Object;I)Ljava/util/Hashtable$Entry;");
 
+  private final static MethodReference HashtableEnumAccessor = MethodReference.findOrCreate(JavaUtilHashtable, "access$400",
+      "(Ljava/util/Hashtable;)[Ljava/util/Hashtable$Entry;");
+
   /**
    * The governing class hierarchy.
    */
@@ -144,6 +147,10 @@ public class ContainerContextSelector implements ContextSelector {
       return true;
     }
     if (m.equals(HashtableNewEntry)) {
+      return true;
+    }
+    // HACK treat accessor method with call-string sensitivity
+    if (m.equals(HashtableEnumAccessor)) {
       return true;
     }
     return false;
